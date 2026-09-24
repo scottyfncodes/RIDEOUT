@@ -117,3 +117,22 @@ export async function fetchRegionalBreweries(bbox: [number, number, number, numb
 export function osmUrl(id: string): string {
   return `https://www.openstreetmap.org/${id}`;
 }
+
+/**
+ * Bike shops around an arbitrary point (e.g. home), for Garage → Bike Shops.
+ * Same source, parser and cache as the area query. Nothing new is fetched for a
+ * riding area: Garage reuses fetchAreaPlaces for that.
+ */
+export async function fetchShopsNear(key: string, p: LatLon, radiusM = 25000): Promise<Fetched<Place[]>> {
+  const cacheKey = `shops:${key}:${p.lat.toFixed(2)},${p.lon.toFixed(2)}`;
+  const cached = cacheGet<Place[]>(cacheKey, 24 * 3600 * 1000);
+  if (cached) return { ok: true, data: cached.value, source: OSM_SOURCE, fetchedAt: new Date(cached.at).toISOString(), fromCache: true };
+  try {
+    const q = `[out:json][timeout:25];(nwr(${around(radiusM, p)})[shop=bicycle];);out center tags;`;
+    const places = parseElements(await runOverpass(q)).filter((x) => x.categories.includes('bike'));
+    cacheSet(cacheKey, places);
+    return { ok: true, data: places, source: OSM_SOURCE, fetchedAt: new Date().toISOString(), fromCache: false };
+  } catch (e) {
+    return { ok: false, error: `Bike shop data unavailable (${(e as Error).message})`, source: OSM_SOURCE };
+  }
+}

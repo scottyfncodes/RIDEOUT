@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { RidingArea } from '../../content/types';
+import type { LatLon } from '../../utils/geo';
 import { apresOptions, bikeShopServices, toOption, type ApresFilters, type PlaceOption } from '../../engine/apres';
 import { osmUrl } from '../../services/places/overpass';
 import type { Fetched, Place, PlaceCategory } from '../../services/types';
@@ -33,49 +34,78 @@ function Contact({ o }: { o: PlaceOption }) {
   );
 }
 
+/** Service filters that map to real OpenStreetMap tags (see bikeShopServices). */
+export const SHOP_FILTERS = [
+  { key: 'repair', label: '🔧 Repairs' },
+  { key: 'parts', label: '🔩 Parts' },
+  { key: 'rental', label: '🚲 Rentals' },
+  { key: 'wash', label: '🧰 Bike wash' },
+] as const;
+export type ShopFilter = (typeof SHOP_FILTERS)[number]['key'] | 'all';
+
+/** Shared shop list used by the area profile and Garage → Bike Shops. */
+export function ShopList(props: {
+  origin: LatLon;
+  originLabel: string;
+  places: Fetched<Place[]> | null;
+  weekday: number;
+  atMin: number;
+  filter?: ShopFilter;
+  limit?: number;
+}) {
+  const { places, filter = 'all' } = props;
+  if (places == null) return <div className="skeleton" />;
+  if (!places.ok)
+    return (
+      <div className="notice bad" data-testid="shops-unavailable">
+        Bike shop data unavailable.
+      </div>
+    );
+  const shops = places.data
+    .filter((p) => p.categories.includes('bike'))
+    .filter((p) => filter === 'all' || bikeShopServices(p.tags).some((s) => s.key === filter))
+    .map((p) => toOption(p, props.origin, props.weekday, props.atMin))
+    .sort((a, b) => a.miles - b.miles)
+    .slice(0, props.limit ?? 5);
+  return (
+    <>
+      {!shops.length ? (
+        <p className="nodata">
+          {filter === 'all' ? 'No bike shops found within ~15 mi in OpenStreetMap.' : 'No nearby shops are tagged with that service in OpenStreetMap. Try All, or call ahead.'}
+        </p>
+      ) : (
+        <div data-testid="shops">
+          {shops.map((o) => {
+            const services = bikeShopServices(o.place.tags);
+            return (
+              <div key={o.place.id} className="place">
+                <div className="row between">
+                  <span className="pname">{o.place.name}</span>
+                  <span className="dim mono">{fmtMi(o.miles)}</span>
+                </div>
+                <div className="dim">Today: {o.hoursToday ?? 'hours not listed'}</div>
+                <div className="tags">
+                  {services.length ? services.map((s) => <span key={s.key} className="pill">{s.icon} {s.label}</span>) : <span className="pill">Services not listed</span>}
+                </div>
+                <Contact o={o} />
+              </div>
+            );
+          })}
+        </div>
+      )}
+      <p className="dim">Distances are straight-line from {props.originLabel}.</p>
+      <SourceLine source={places.source} />
+    </>
+  );
+}
+
 export function BikeShopsPanel({ area, places, weekday, nowish }: { area: RidingArea; places: Fetched<Place[]> | null; weekday: number; nowish: number }) {
   return (
     <Section title="Bike shops" id="shops">
       <p className="dim" style={{ marginTop: -4 }}>
-        Your bailout for mechanicals. Distances are straight-line from the trailhead.
+        Your bailout for mechanicals.
       </p>
-      {places == null ? (
-        <div className="skeleton" />
-      ) : !places.ok ? (
-        <div className="notice bad" data-testid="shops-unavailable">
-          Bike shop data unavailable.
-        </div>
-      ) : (
-        (() => {
-          const shops = places.data
-            .filter((p) => p.categories.includes('bike'))
-            .map((p) => toOption(p, area.trailhead, weekday, nowish))
-            .sort((a, b) => a.miles - b.miles)
-            .slice(0, 5);
-          if (!shops.length) return <p className="nodata">No bike shops found within ~15 mi in OpenStreetMap.</p>;
-          return (
-            <div data-testid="shops">
-              {shops.map((o) => {
-                const services = bikeShopServices(o.place.tags);
-                return (
-                  <div key={o.place.id} className="place">
-                    <div className="row between">
-                      <span className="pname">{o.place.name}</span>
-                      <span className="dim mono">{fmtMi(o.miles)}</span>
-                    </div>
-                    <div className="dim">Today: {o.hoursToday ?? 'hours not listed'}</div>
-                    <div className="tags">
-                      {services.length ? services.map((s) => <span key={s.key} className="pill">{s.icon} {s.label}</span>) : <span className="pill">Services not listed</span>}
-                    </div>
-                    <Contact o={o} />
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })()
-      )}
-      {places && <SourceLine source={places.source} />}
+      <ShopList origin={area.trailhead} originLabel="the trailhead" places={places} weekday={weekday} atMin={nowish} />
     </Section>
   );
 }

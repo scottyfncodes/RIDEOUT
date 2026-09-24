@@ -33,6 +33,13 @@ export function Sources() {
         </li>
       </ul>
 
+      <div className="label">Your Garage</div>
+      <ul className="small">
+        <li><b>Bike specs, service dates, checklist ticks:</b> entered by you and stored only on this device. Checklist ticks clear each day.</li>
+        <li><b>Bike Prep:</b> general prep guidance based on the ride (editorial ride character, route stats), the forecast and the mud-risk estimate. It never recommends a tire pressure. Your own pressures appear only as “your usual”.</li>
+        <li><b>Trailside help:</b> general guidance, not a professional diagnosis.</li>
+      </ul>
+
       <div className="label">What RIDEOUT calculates</div>
       <ul className="small">
         <li><b>Ride window:</b> classifies each forecast hour by temperature, precipitation, thunder and gusts, then picks the best daylight block that fits your ride.</li>

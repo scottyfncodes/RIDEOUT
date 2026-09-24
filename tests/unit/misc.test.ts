@@ -68,6 +68,9 @@ describe('routing + status helpers', () => {
     expect(parseHash('#/map')).toEqual({ name: 'map' });
     expect(parseHash('')).toEqual({ name: 'home' });
     expect(parseHash('#/garbage')).toEqual({ name: 'home' });
+    expect(parseHash('#/garage')).toEqual({ name: 'garage' });
+    expect(parseHash('#/garage/bike')).toEqual({ name: 'bike', from: 'garage' });
+    expect(parseHash('#/garage/bike?from=settings')).toEqual({ name: 'bike', from: 'settings' });
   });
   it('maps scores to statuses and caps', () => {
     expect(statusFromScore(80)).toBe('send');

@@ -5,9 +5,10 @@ import { DEFAULT_PREFS, type Preferences } from '../engine/prefs';
 import { cacheClear } from '../services/cache';
 import { useStore } from '../state/store';
 import { resetSharedData } from '../hooks/useRideData';
+import { BikeCard } from '../components/garage/BikeCard';
 
 export function Settings() {
-  const { prefs, setPrefs, setParams } = useStore();
+  const { prefs, setPrefs, setParams, bike } = useStore();
   const [geoMsg, setGeoMsg] = useState<string | null>(null);
   const up = (p: Partial<Preferences>) => setPrefs({ ...prefs, ...p });
 
@@ -64,6 +65,9 @@ export function Settings() {
         📍 Use my location
       </button>
       {geoMsg && <p className="dim">{geoMsg}</p>}
+
+      <div className="label">My bike</div>
+      <BikeCard bike={bike} from="settings" />
 
       <div className="label">Defaults</div>
       <div className="field">

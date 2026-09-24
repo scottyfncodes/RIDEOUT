@@ -13,6 +13,13 @@ const Icon = {
       <path d="M9 4v14M15 6v14" />
     </svg>
   ),
+  garage: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <circle cx="6" cy="16" r="4" />
+      <circle cx="18" cy="16" r="4" />
+      <path d="M6 16l4-8h5l3 8M10 8l2 8h-6M9 5h3" />
+    </svg>
+  ),
   settings: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0" />
@@ -29,7 +36,8 @@ const Icon = {
 };
 
 export function Nav({ route }: { route: Route }) {
-  const cur = (n: Route['name']) => (route.name === n || (n === 'home' && route.name === 'area') ? 'page' : undefined);
+  const cur = (n: Route['name']) =>
+    route.name === n || (n === 'home' && route.name === 'area') || (route.name === 'bike' && n === (route.from === 'settings' ? 'settings' : 'garage')) ? 'page' : undefined;
   return (
     <nav className="nav" aria-label="Main">
       <a href={href.home} aria-current={cur('home')}>
@@ -39,6 +47,10 @@ export function Nav({ route }: { route: Route }) {
       <a href={href.map} aria-current={cur('map')}>
         {Icon.map}
         Map
+      </a>
+      <a href={href.garage} aria-current={cur('garage')}>
+        {Icon.garage}
+        Garage
       </a>
       <a href={href.settings} aria-current={cur('settings')}>
         {Icon.settings}

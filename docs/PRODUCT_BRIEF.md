@@ -73,3 +73,30 @@ public API), turn-by-turn navigation (we hand off to Maps).
 2. Crowd-free trail-condition signal: parse official agency closure pages where permitted.
 3. More areas (Fruita, Salida, Summit County, Crested Butte) as region packs.
 4. GPX loops per signature ride, drawn on the map.
+
+---
+
+## 5. Garage (enhancement pass)
+
+**Principle:** Garage exists to make "where should I ride?" better. It doesn't turn RIDEOUT into a maintenance app.
+
+- **One bike, one store.** `engine/garage.ts` persists the bike, service dates and today's checklist using the same guarded-localStorage pattern as preferences. The shared store gives Garage and Setup the same bike object.
+- **Bike data has to earn its keep.** `engine/bikePrep.ts` is a pure, data-driven rule table. Each trigger records what it was *based on*, one of:
+  - RIDEOUT editorial ride character
+  - route stats
+  - the forecast in the ride window
+  - the mud-risk *estimate*
+
+  Checks that several triggers agree on come first, and the list is capped at 4. When nothing about the ride calls for prep, the panel doesn't render.
+- **Honesty rules carried over.** No tire-pressure recommendations: the rider's own pressures are shown as "your usual". All guidance is labeled general, not a mechanical inspection. Weather-based triggers never fire when weather is unavailable.
+- **No duplicate data sources.** Garage → Bike Shops reuses the OpenStreetMap/Overpass adapter and the shop list component from the area profile. Service filters exist only where OSM has a real tag (repair, parts/retail, rental, cleaning). Suspension and e-bike service are rarely tagged, so the UI says to call ahead instead of guessing.
+
+### Future opportunities (deliberately not built)
+- Multiple bikes, with a picker on the area profile.
+- Pressure *ranges* from a vetted source keyed on tire size, rider weight and terrain. Only worth doing with a trustworthy source.
+- Service reminders by date ("suspension serviced 14 months ago"). No mileage tracking or schedules.
+- Show today's unticked checklist items inside Bike Prep ("3 checks left").
+- Offline copy of Trailside help pinned by the service worker for no-signal trailheads.
+
+### Needs a real iPhone to verify
+Home Screen icon appearance, standalone launch (no Safari chrome), safe-area insets with the fixed bottom nav, the native date pickers in the service log, momentum scrolling with the sticky jump chips, and on-screen keyboard behavior in the bike editor.

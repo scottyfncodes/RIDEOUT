@@ -17,15 +17,19 @@ import { GettingThere } from '../components/area/GettingThere';
 import { AccessPanel, ParkingPanel, TrailMapsPanel } from '../components/area/ParkingPanel';
 import { ApresPanel, BikeShopsPanel } from '../components/area/PlacesPanels';
 import { ShareCard } from '../components/area/ShareCard';
+import { BikePrepPanel } from '../components/area/BikePrepPanel';
+import { bikePrep } from '../engine/bikePrep';
 
 export function Area({ id }: { id: string }) {
   const area = getArea(id);
-  const { params, today, home } = useStore();
+  const { params, today, home, bike } = useStore();
   const data = useRideData();
   const places = useAreaPlaces(area);
   const [rideId, setRideId] = useState<string | undefined>(undefined);
 
   const r = useMemo(() => (area && data.input ? evaluateArea(area, data.input, rideId) : null), [area, data.input, rideId]);
+
+  const prep = useMemo(() => (r ? bikePrep(r, bike) : null), [r, bike]);
 
   if (!area) {
     return (
@@ -62,6 +66,7 @@ export function Area({ id }: { id: string }) {
           ['window', 'Window'],
           ['weather', 'Weather'],
           ['conditions', 'Trail'],
+          ...(prep ? [['prep', 'Prep']] : []),
           ['drive', 'Drive'],
           ['parking', 'Parking'],
           ['shops', 'Shops'],
@@ -198,6 +203,7 @@ export function Area({ id }: { id: string }) {
       <WeatherPanel fx={data.forecasts[area.id]} date={params.date} isToday={params.date === today} window={r?.window?.window ?? null} />
       {r && <ConditionsPanel r={r} />}
       {r && <AccessPanel area={area} access={r.access} />}
+      {prep && <BikePrepPanel prep={prep} />}
       {r && <GettingThere r={r} homeLabel={home.label} />}
       <ParkingPanel area={area} />
       <TrailMapsPanel area={area} />

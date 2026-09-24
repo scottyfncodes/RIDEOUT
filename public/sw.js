@@ -1,9 +1,9 @@
 // RIDEOUT service worker: offline app shell only. Live data (weather, routing, places)
 // is never served stale from here; the app has its own labelled cache for that.
-const CACHE = 'rideout-shell-v1';
+const CACHE = 'rideout-shell-v2';
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html', './manifest.webmanifest', './icon.svg'])).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html', './manifest.webmanifest', './icon.svg', './apple-touch-icon.png', './icon-192.png', './icon-512.png'])).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {

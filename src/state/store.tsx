@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { loadPrefs, savePrefs, type Preferences } from '../engine/prefs';
+import { loadBike, loadMaintenance, saveBike, saveMaintenance, type Bike, type Maintenance } from '../engine/garage';
 import type { SearchParams } from '../engine/modes';
 import { DEFAULT_REGION, HOME_PRESETS } from '../data/regions';
 import { nowInZone } from '../utils/time';
@@ -14,6 +15,11 @@ interface Store {
   /** Has the user pressed FIND MY RIDE this session? */
   searched: boolean;
   setSearched: (v: boolean) => void;
+  /** The one saved bike. Garage and Setup both read and write this. */
+  bike: Bike | null;
+  setBike: (b: Bike | null) => void;
+  maintenance: Maintenance;
+  setMaintenance: (m: Maintenance) => void;
 }
 
 const Ctx = createContext<Store | null>(null);
@@ -59,6 +65,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setPrefsState(p);
     savePrefs(p);
   }, []);
+  const [bike, setBikeState] = useState<Bike | null>(() => loadBike());
+  const setBike = useCallback((b: Bike | null) => {
+    setBikeState(b);
+    saveBike(b);
+  }, []);
+  const [maintenance, setMaintenanceState] = useState<Maintenance>(() => loadMaintenance());
+  const setMaintenance = useCallback((m: Maintenance) => {
+    setMaintenanceState(m);
+    saveMaintenance(m);
+  }, []);
   const setParams = useCallback((p: Partial<SearchParams>) => setParamsState((prev) => ({ ...prev, ...p })), []);
 
   const home = useMemo(() => {
@@ -67,7 +83,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return { lat: d.lat, lon: d.lon, label: d.name, isDefault: true };
   }, [prefs.home]);
 
-  const value = useMemo(() => ({ prefs, setPrefs, params, setParams, today, home, searched, setSearched }), [prefs, setPrefs, params, setParams, today, home, searched]);
+  const value = useMemo(
+    () => ({ prefs, setPrefs, params, setParams, today, home, searched, setSearched, bike, setBike, maintenance, setMaintenance }),
+    [prefs, setPrefs, params, setParams, today, home, searched, bike, setBike, maintenance, setMaintenance],
+  );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 

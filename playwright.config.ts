@@ -13,10 +13,19 @@ export default defineConfig({
     browserName: 'chromium',
     launchOptions: executablePath ? { executablePath } : {},
   },
-  webServer: {
-    command: 'npm run build && npx vite preview --port 4173 --strictPort',
-    url: 'http://localhost:4173',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  webServer: [
+    {
+      command: 'npm run build && npx vite preview --port 4173 --strictPort',
+      url: 'http://localhost:4173',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+    {
+      // dist/ served under /RIDEOUT/, like GitHub Pages (starts after the build above).
+      command: 'node scripts/serve-subpath.mjs',
+      url: 'http://localhost:4174/RIDEOUT/',
+      reuseExistingServer: !process.env.CI,
+      timeout: 30_000,
+    },
+  ],
 });
