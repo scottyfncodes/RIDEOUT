@@ -23,7 +23,7 @@ test.describe('PWA under the GitHub Pages /RIDEOUT/ base path', () => {
 
     // Resolve every icon link relative to the page URL, exactly as Safari does.
     const hrefs = await page.locator('link[rel="apple-touch-icon"], link[rel="icon"], link[rel="manifest"]').evaluateAll((els) => els.map((e) => (e as HTMLLinkElement).href));
-    expect(hrefs.some((h) => h === `${BASE}apple-touch-icon.png`)).toBe(true);
+    expect(hrefs.some((h) => h === `${BASE}apple-touch-icon.png?v=2`)).toBe(true);
     for (const h of hrefs) expect((await request.get(h)).status(), h).toBe(200);
 
     const touch = await request.get(`${BASE}apple-touch-icon.png`);

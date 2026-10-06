@@ -143,7 +143,7 @@ test.describe('graceful degradation', () => {
 test('PWA metadata is present', async ({ page, request }) => {
   await mockNetwork(page);
   await page.goto('/');
-  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('href', './apple-touch-icon.png');
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('href', './apple-touch-icon.png?v=2');
   await expect(page.locator('meta[name="apple-mobile-web-app-capable"]')).toHaveAttribute('content', 'yes');
   const manifest = await (await request.get('/manifest.webmanifest')).json();
   expect(manifest.display).toBe('standalone');
