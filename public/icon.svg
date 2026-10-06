@@ -1,35 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#1f3a2e"/>
-      <stop offset="1" stop-color="#0e1a14"/>
+      <stop offset="0" stop-color="#1c2c23"/>
+      <stop offset="1" stop-color="#111512"/>
     </linearGradient>
-    <linearGradient id="slope" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3b5a45"/>
-      <stop offset="1" stop-color="#20362a"/>
-    </linearGradient>
-    <linearGradient id="trail" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffb347"/>
-      <stop offset="1" stop-color="#ff6b1a"/>
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb14a"/>
+      <stop offset="1" stop-color="#ff6f1f"/>
     </linearGradient>
   </defs>
-  <!-- Full-bleed square: iOS applies its own rounded mask. -->
-  <rect width="1024" height="1024" fill="url(#sky)"/>
-  <!-- Sun low over the ridge -->
-  <circle cx="742" cy="282" r="92" fill="#f1ece0" opacity=".92"/>
-  <!-- Back ridge -->
-  <path d="M0 520 L210 360 L330 440 L520 250 L700 420 L820 350 L1024 500 L1024 1024 L0 1024 Z" fill="#2a4535" opacity=".9"/>
-  <!-- Front slope -->
-  <path d="M0 610 L300 420 L520 330 L1024 640 L1024 1024 L0 1024 Z" fill="url(#slope)"/>
-  <!-- Topo contours on the slope -->
-  <g fill="none" stroke="#f1ece0" stroke-opacity=".10" stroke-width="10" stroke-linecap="round">
-    <path d="M60 690 C260 600 420 520 560 470 C700 520 860 600 1000 690"/>
-    <path d="M20 790 C240 700 420 620 580 580 C740 620 900 700 1020 790"/>
-    <path d="M0 900 C230 820 420 740 600 700 C760 740 920 820 1024 900"/>
+  <rect width="512" height="512" fill="url(#sky)"/>
+  <circle cx="392" cy="112" r="40" fill="#e6e1d3" opacity=".9"/>
+  <path d="M0 300 L 96 196 L 150 238 L 236 140 L 318 228 L 368 190 L 512 300 L 512 512 L 0 512 Z" fill="#26392e"/>
+  <path d="M236 140 L 266 172 L 252 170 L 240 184 L 226 168 L 212 168 Z" fill="#e6e1d3" opacity=".75"/>
+  <path d="M0 372 L 120 300 L 210 340 L 330 290 L 512 360 L 512 512 L 0 512 Z" fill="#30493a"/>
+  <!-- singletrack -->
+  <path d="M-10 452 C 120 420, 300 420, 522 404 L 522 522 L -10 522 Z" fill="#17201a"/>
+  <path d="M-10 452 C 120 420, 300 420, 522 404" fill="none" stroke="#c98a4a" stroke-width="5" opacity=".7"/>
+  <g transform="rotate(-4 256 360)">
+    <!-- wheels: knobby tires -->
+    <g fill="none" stroke="#efe9db">
+      <circle cx="148" cy="364" r="62" stroke-width="18"/>
+      <circle cx="364" cy="364" r="62" stroke-width="18"/>
+      <circle cx="148" cy="364" r="73" stroke-width="6" stroke-dasharray="3.5 7.97" stroke-opacity=".85"/>
+      <circle cx="364" cy="364" r="73" stroke-width="6" stroke-dasharray="3.5 7.97" stroke-opacity=".85"/>
+      <circle cx="148" cy="364" r="42" stroke-width="2.5" stroke-opacity=".35"/>
+      <circle cx="364" cy="364" r="42" stroke-width="2.5" stroke-opacity=".35"/>
+    </g>
+    <circle cx="148" cy="364" r="9" fill="#efe9db"/>
+    <circle cx="364" cy="364" r="9" fill="#efe9db"/>
+    <!-- frame -->
+    <g fill="none" stroke="url(#frame)" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M244 372 L 210 270 M244 372 L 318 262 M210 278 L 316 252" stroke-width="18"/>
+      <path d="M244 372 L 148 364 M148 364 L 208 300" stroke-width="12"/>
+    </g>
+    <!-- rear shock -->
+    <path d="M222 300 L 262 288" stroke="#efe9db" stroke-width="12" stroke-linecap="round"/>
+    <!-- suspension fork + head tube -->
+    <path d="M316 244 L 324 272" stroke="url(#frame)" stroke-width="22" stroke-linecap="round"/>
+    <path d="M326 276 L 342 322" stroke="#2b2b2b" stroke-width="15" stroke-linecap="round"/>
+    <path d="M338 312 L 364 364" stroke="#d9d4c6" stroke-width="10" stroke-linecap="round"/>
+    <!-- cockpit -->
+    <path d="M314 242 L 318 222 L 340 214" fill="none" stroke="#2b2b2b" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M326 208 L 354 220" stroke="#2b2b2b" stroke-width="12" stroke-linecap="round"/>
+    <!-- dropper + saddle -->
+    <path d="M210 270 L 202 240" stroke="#2b2b2b" stroke-width="10" stroke-linecap="round"/>
+    <path d="M176 236 C 196 228, 216 230, 230 236" fill="none" stroke="#2b2b2b" stroke-width="13" stroke-linecap="round"/>
+    <!-- drivetrain -->
+    <circle cx="244" cy="372" r="20" fill="#1a1f1b" stroke="#efe9db" stroke-width="5"/>
+    <path d="M244 372 L 258 398" stroke="#efe9db" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="148" cy="364" r="20" fill="none" stroke="#efe9db" stroke-width="3" stroke-opacity=".5"/>
   </g>
-  <!-- Switchback trail: dark cut, then bright line -->
-  <path d="M520 335 C560 400 700 430 690 500 C680 570 360 560 350 650 C340 740 700 740 690 830 C684 890 560 930 470 1024"
-        fill="none" stroke="#0e1a14" stroke-opacity=".55" stroke-width="92" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M520 335 C560 400 700 430 690 500 C680 570 360 560 350 650 C340 740 700 740 690 830 C684 890 560 930 470 1024"
-        fill="none" stroke="url(#trail)" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
