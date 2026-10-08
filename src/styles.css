@@ -64,8 +64,8 @@ img { max-width: 100%; }
 .display { font-family: var(--font-display); font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; line-height: 0.95; margin: 0; }
 .brand { font-size: 20px; letter-spacing: 0.24em; color: var(--accent); }
 .hero { font-size: 40px; margin: 4px 0 8px; }
-.chips.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.modes .chip { justify-content: center; }
+.chips.modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.modes .chip { justify-content: center; min-width: 0; white-space: normal; text-align: center; line-height: 1.15; }
 .legend { display: flex; gap: 6px; flex-wrap: wrap; }
 .legend .mk { box-shadow: none; }
 .h2 { font-family: var(--font-display); font-weight: 800; font-size: 26px; text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 8px; }
@@ -262,3 +262,21 @@ details.more { margin: 8px 0; border-top: 1px solid var(--line); }
 .field input, .field select, .field textarea { width: 100%; }
 .basis { margin: 6px 0; padding: 0; list-style: none; }
 .basis li { font-size: 13px; color: var(--ink-3); }
+
+/* ---------- home: top pick ---------- */
+.pick { background: var(--panel); border: 1.5px solid var(--line); border-left: 6px solid var(--accent); border-radius: var(--radius); padding: 4px 16px 16px; margin-top: 14px; }
+.pick .label { margin: 12px 0 6px; }
+.pick .status.big { font-size: 28px; }
+.pick .name { font-family: var(--font-display); font-weight: 800; font-size: 34px; text-transform: uppercase; line-height: 1; margin: 6px 0 4px; overflow-wrap: anywhere; }
+.pick .meta { color: var(--ink-2); font-size: 14px; }
+.pick .why { margin-top: 8px; font-size: 15px; }
+.pick .cta { margin-top: 14px; }
+.pick .skeleton { margin: 8px 0 0; }
+.note { margin: 10px 0 0; font-size: 13px; color: var(--ink-3); }
+a.cta { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+.cta.secondary { background: transparent; color: var(--ink); border: 2px solid var(--line); font-size: 20px; min-height: 52px; }
+.label.strong { color: var(--accent); font-size: 16px; margin-top: 26px; border-top: 1px solid var(--line); padding-top: 18px; }
+.date-chip input[type='date'] { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: pointer; }
+.chips.dates { gap: 6px; }
+.chips.dates .chip { padding: 0 14px; }
+.chips.dates .date-chip { padding: 0 12px; }
