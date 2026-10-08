@@ -16,6 +16,14 @@ test.describe('RIDEOUT primary flow', () => {
     await expect(page.getByTestId('date-tomorrow')).toHaveAttribute('aria-pressed', 'true');
     await page.getByTestId('mode-half').click();
     await page.getByTestId('diff-blue').click();
+    await page.getByTestId('diff-black').click();
+    await expect(page.getByTestId('diff-blue')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByTestId('diff-black')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByTestId('diff-any')).toHaveAttribute('aria-pressed', 'false');
+    await page.getByTestId('vibe-rip').click();
+    await page.getByTestId('vibe-technical').click();
+    await expect(page.getByTestId('vibe-rip')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByTestId('vibe-technical')).toHaveAttribute('aria-pressed', 'true');
     await page.getByTestId('find').click();
 
     // 5. Recommendations

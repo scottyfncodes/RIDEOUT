@@ -24,6 +24,15 @@ export function Chip<T extends string | number | null>(props: {
   );
 }
 
+/** A toggle chip for multi-select groups. */
+export function MultiChip(props: { pressed: boolean; onClick: () => void; children: ReactNode; testId?: string }) {
+  return (
+    <button type="button" className="chip" aria-pressed={props.pressed} data-testid={props.testId} onClick={props.onClick}>
+      {props.children}
+    </button>
+  );
+}
+
 export function StatusBadge({ status, big }: { status: Status; big?: boolean }) {
   const m = STATUS_META[status];
   return (

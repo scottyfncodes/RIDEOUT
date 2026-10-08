@@ -1,5 +1,5 @@
 import { DIFFICULTY_ORDER, type Difficulty, type RidingArea, type SignatureRide } from '../content/types';
-import type { DifficultyChoice, ModeSpec, Vibe } from './modes';
+import type { ModeSpec, Vibe } from './modes';
 import type { Preferences } from './prefs';
 
 /** Ride-time estimate. Transparent formula; always labelled "estimate" in the UI. */
@@ -17,21 +17,23 @@ export function diffIndex(d: Difficulty): number {
   return DIFFICULTY_ORDER.indexOf(d);
 }
 
-/** Is the requested difficulty inside the area's range? Used as a filter. */
-export function matchesDifficulty(area: RidingArea, choice: DifficultyChoice): boolean {
-  if (choice === 'any') return true;
-  const i = diffIndex(choice);
-  return i >= diffIndex(area.difficultyRange[0]) && i <= diffIndex(area.difficultyRange[1]);
+/** Is any requested difficulty inside the area's range? Used as a filter. Empty = any. */
+export function matchesDifficulty(area: RidingArea, choices: Difficulty[]): boolean {
+  if (!choices.length) return true;
+  return choices.some((c) => {
+    const i = diffIndex(c);
+    return i >= diffIndex(area.difficultyRange[0]) && i <= diffIndex(area.difficultyRange[1]);
+  });
 }
 
 /** Pick the signature ride that best matches difficulty and duration. */
-export function pickRide(area: RidingArea, choice: DifficultyChoice, mode: ModeSpec, maxRideMin: number | null): SignatureRide | null {
+export function pickRide(area: RidingArea, choices: Difficulty[], mode: ModeSpec, maxRideMin: number | null): SignatureRide | null {
   if (!area.rides.length) return null;
   const target = maxRideMin != null ? Math.min(mode.rideDefault, maxRideMin) : mode.rideDefault;
   const scored = area.rides.map((r) => {
     const mins = estimateRideMinutes(r);
     let s = 0;
-    if (choice !== 'any') s -= Math.abs(diffIndex(r.difficulty) - diffIndex(choice)) * 2;
+    if (choices.length) s -= Math.min(...choices.map((c) => Math.abs(diffIndex(r.difficulty) - diffIndex(c)))) * 2;
     if (mins != null) {
       s -= Math.abs(mins - target) / 60;
       if (maxRideMin != null && mins > maxRideMin) s -= 3;
@@ -47,13 +49,21 @@ export interface FitComponent {
   note: string;
 }
 
-export function difficultyFit(area: RidingArea, choice: DifficultyChoice): FitComponent {
-  if (choice === 'any') return { value: 0.8, note: 'Any difficulty' };
-  if (matchesDifficulty(area, choice)) {
-    const exact = area.difficultyRange[0] === choice || area.difficultyRange[1] === choice;
+export function difficultyFit(area: RidingArea, choices: Difficulty[]): FitComponent {
+  if (!choices.length) return { value: 0.8, note: 'Any difficulty' };
+  if (matchesDifficulty(area, choices)) {
+    const exact = choices.some((c) => area.difficultyRange[0] === c || area.difficultyRange[1] === c);
     return { value: exact ? 1 : 0.9, note: 'Matches the difficulty you picked' };
   }
   return { value: 0.2, note: 'Outside the difficulty you picked' };
+}
+
+/** Fit across several vibes: the average, so areas that deliver all of them rank highest. Empty = any. */
+export function vibesFit(area: RidingArea, vibes: Vibe[]): FitComponent {
+  const picked = vibes.filter((v) => v !== 'any');
+  if (!picked.length) return vibeFit(area, 'any');
+  const fits = picked.map((v) => vibeFit(area, v));
+  return { value: fits.reduce((a, f) => a + f.value, 0) / fits.length, note: fits.map((f) => f.note).join(' · ') };
 }
 
 export function vibeFit(area: RidingArea, vibe: Vibe): FitComponent {

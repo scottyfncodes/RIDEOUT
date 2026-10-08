@@ -17,7 +17,7 @@ function forecasts(days: Record<number, DayOpts> = {}, date = today): Record<str
 function drives(min = 45): Record<string, DriveInfo> {
   return Object.fromEntries(ALL_AREAS.map((a) => [a.id, { minutes: min, miles: min * 0.8, method: 'routed', source: OSRM_SOURCE } as DriveInfo]));
 }
-const params = (p: Partial<SearchParams> = {}): SearchParams => ({ date: '2026-09-24', mode: 'half', vibe: 'any', difficulty: 'any', maxDrive: null, quickBudget: 180, ...p });
+const params = (p: Partial<SearchParams> = {}): SearchParams => ({ date: '2026-09-24', mode: 'half', vibes: [], difficulties: [], maxDrive: null, quickBudget: 180, ...p });
 const input = (p: Partial<EngineInput> = {}): EngineInput => ({
   areas: ALL_AREAS,
   forecasts: forecasts(),
@@ -102,13 +102,20 @@ describe('access rules by date', () => {
 
 describe('filtering', () => {
   it('difficulty filter excludes areas whose range does not include the choice', () => {
-    const { results, excluded } = recommend(input({ params: params({ difficulty: 'dblack' }) }));
+    const { results, excluded } = recommend(input({ params: params({ difficulties: ['dblack'] }) }));
     expect(results.map((r) => r.area.id)).toEqual(['floyd-hill']);
     expect(excluded.length).toBe(ALL_AREAS.length - 1);
   });
   it('green shows only areas with green terrain', () => {
-    const { results } = recommend(input({ params: params({ difficulty: 'green' }) }));
+    const { results } = recommend(input({ params: params({ difficulties: ['green'] }) }));
     expect(results.every((r) => r.area.difficultyRange[0] === 'green')).toBe(true);
+  });
+  it('multiple difficulties keep areas matching any of them', () => {
+    const dbl = recommend(input({ params: params({ difficulties: ['dblack'] }) })).results.length;
+    const green = recommend(input({ params: params({ difficulties: ['green'] }) })).results.length;
+    const both = recommend(input({ params: params({ difficulties: ['green', 'dblack'] }) })).results;
+    expect(both.length).toBeGreaterThanOrEqual(Math.max(dbl, green));
+    expect(both.map((r) => r.area.id)).toContain('floyd-hill');
   });
   it('drive filter excludes far areas with a reason', () => {
     const d = drives(40);
@@ -144,9 +151,19 @@ describe('preferences', () => {
     expect(lim.components.find((c) => c.key === 'prefs')!.note).toMatch(/climbing/);
   });
   it('vibe changes ranking: technical favours rocky areas over mellow ones', () => {
-    const { results } = recommend(input({ params: params({ vibe: 'technical' }) }));
+    const { results } = recommend(input({ params: params({ vibes: ['technical'] }) }));
     const idx = (id: string) => results.findIndex((r) => r.area.id === id);
     expect(idx('walker-ranch')).toBeLessThan(idx('marshall-mesa'));
+  });
+  it('multiple vibes average their fits and weigh as a picked vibe', () => {
+    const area = getArea('walker-ranch')!;
+    const vibe = (vibes: SearchParams['vibes']) => evaluateArea(area, input({ params: params({ vibes }) })).components.find((c) => c.key === 'vibe')!;
+    const tech = vibe(['technical']).value!;
+    const cruise = vibe(['cruise']).value!;
+    const both = vibe(['technical', 'cruise']);
+    expect(both.value).toBeCloseTo((tech + cruise) / 2);
+    expect(both.weight).toBe(10);
+    expect(vibe([]).weight).toBe(4);
   });
   it('Bike + Brewery mode rewards a nearby brewery', () => {
     const area = getArea('hall-ranch')!;

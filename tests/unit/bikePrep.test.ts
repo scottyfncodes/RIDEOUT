@@ -18,7 +18,7 @@ const input = (p: Partial<EngineInput> = {}, date = '2026-09-24'): EngineInput =
   drives,
   breweries: null,
   prefs: DEFAULT_PREFS,
-  params: { date, mode: 'half', vibe: 'any', difficulty: 'any', maxDrive: null, quickBudget: 180 },
+  params: { date, mode: 'half', vibes: [], difficulties: [], maxDrive: null, quickBudget: 180 },
   nowMin: null,
   ...p,
 });

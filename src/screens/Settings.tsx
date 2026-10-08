@@ -78,7 +78,7 @@ export function Settings() {
           onChange={(e) => {
             const v = e.target.value as DifficultyChoice;
             up({ preferredDifficulty: v });
-            setParams({ difficulty: v });
+            setParams({ difficulties: v === 'any' ? [] : [v] });
           }}
         >
           <option value="any">Any</option>

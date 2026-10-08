@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react';
-import { Chip, StatusBadge } from '../components/ui';
-import { DIFFICULTY_ICON, DIFFICULTY_LABEL, MODES, QUICK_BUDGETS, VIBES, type DifficultyChoice, type DriveLimit, type RideMode, type Vibe } from '../engine/modes';
+import { Chip, MultiChip, StatusBadge } from '../components/ui';
+import { DIFFICULTY_ICON, DIFFICULTY_LABEL, MODES, QUICK_BUDGETS, VIBES, toggle, type DriveLimit, type RideMode } from '../engine/modes';
+import { DIFFICULTY_ORDER } from '../content/types';
 import { useRideData, type RideData } from '../hooks/useRideData';
 import { href } from '../hooks/useRoute';
 import { useStore } from '../state/store';
@@ -42,7 +43,7 @@ export function Home() {
         data={data}
         date={params.date}
         today={today}
-        onReset={() => setParams({ difficulty: 'any', maxDrive: null })}
+        onReset={() => setParams({ difficulties: [], maxDrive: null })}
         onRollover={(d) => setParams({ date: d })}
       />
 
@@ -94,21 +95,27 @@ export function Home() {
         </div>
       )}
 
-      <div className="label">Vibe</div>
+      <div className="label">Vibe <span className="dim">· pick any</span></div>
       <div className="chips" role="group" aria-label="Vibe">
-        {VIBES.map((v) => (
-          <Chip<Vibe> key={v.id} value={v.id} current={params.vibe} onSelect={(x) => setParams({ vibe: x })} testId={`vibe-${v.id}`}>
-            {v.emoji} {v.label}
-          </Chip>
-        ))}
+        {VIBES.map((v) => {
+          const pressed = v.id === 'any' ? params.vibes.length === 0 : params.vibes.includes(v.id);
+          return (
+            <MultiChip key={v.id} pressed={pressed} onClick={() => setParams({ vibes: v.id === 'any' ? [] : toggle(params.vibes, v.id) })} testId={`vibe-${v.id}`}>
+              {v.emoji} {v.label}
+            </MultiChip>
+          );
+        })}
       </div>
 
-      <div className="label">How hard?</div>
+      <div className="label">How hard? <span className="dim">· pick any</span></div>
       <div className="chips" role="group" aria-label="Difficulty">
-        {(['any', 'green', 'blue', 'black', 'dblack'] as DifficultyChoice[]).map((d) => (
-          <Chip key={d} value={d} current={params.difficulty} onSelect={(v) => setParams({ difficulty: v })} testId={`diff-${d}`}>
-            {d === 'any' ? 'Any' : `${DIFFICULTY_ICON[d]} ${DIFFICULTY_LABEL[d]}`}
-          </Chip>
+        <MultiChip pressed={params.difficulties.length === 0} onClick={() => setParams({ difficulties: [] })} testId="diff-any">
+          Any
+        </MultiChip>
+        {DIFFICULTY_ORDER.map((d) => (
+          <MultiChip key={d} pressed={params.difficulties.includes(d)} onClick={() => setParams({ difficulties: toggle(params.difficulties, d) })} testId={`diff-${d}`}>
+            {DIFFICULTY_ICON[d]} {DIFFICULTY_LABEL[d]}
+          </MultiChip>
         ))}
       </div>
 
