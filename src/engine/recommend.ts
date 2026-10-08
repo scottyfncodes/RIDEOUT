@@ -2,7 +2,7 @@ import type { RidingArea, SignatureRide } from '../content/types';
 import type { AreaForecast, DriveInfo, Fetched, Place } from '../services/types';
 import { evaluateAccess, type AccessResult } from './access';
 import { nearestBrewery } from './apres';
-import { difficultyFit, estimateRideMinutes, matchesDifficulty, pickRide, preferenceFit, vibeFit, clamp01 } from './fit';
+import { difficultyFit, estimateRideMinutes, matchesDifficulty, pickRide, preferenceFit, vibesFit, clamp01 } from './fit';
 import { MODES, type SearchParams } from './modes';
 import { assessMudRisk, type MudRisk } from './mudRisk';
 import { buildItinerary, earliestRideStart, type Itinerary } from './planner';
@@ -68,7 +68,7 @@ export function recommend(input: EngineInput): EngineOutput {
   const excluded: EngineOutput['excluded'] = [];
 
   for (const area of areas) {
-    if (!matchesDifficulty(area, params.difficulty)) {
+    if (!matchesDifficulty(area, params.difficulties)) {
       excluded.push({ area, reason: 'Outside the difficulty you picked' });
       continue;
     }
@@ -95,7 +95,7 @@ export function evaluateArea(area: RidingArea, input: EngineInput, rideId?: stri
   const budget = params.mode === 'quick' ? params.quickBudget : mode.outingBudget;
   const maxRideMin = budget != null && driveMin != null ? Math.max(30, budget - 2 * driveMin - gear - 10) : null;
 
-  const ride = (rideId && area.rides.find((r) => r.id === rideId)) || pickRide(area, params.difficulty, mode, maxRideMin);
+  const ride = (rideId && area.rides.find((r) => r.id === rideId)) || pickRide(area, params.difficulties, mode, maxRideMin);
   const est = ride ? estimateRideMinutes(ride) : null;
   const rideMinutesEstimated = est == null;
   let rideMinutes = est ?? (maxRideMin != null ? Math.min(mode.rideDefault, maxRideMin) : mode.rideDefault);
@@ -150,7 +150,7 @@ export function evaluateArea(area: RidingArea, input: EngineInput, rideId?: stri
   const mudVal = { low: 1, moderate: 0.7, elevated: 0.3, high: 0, unknown: null }[mud.level];
   components.push({ key: 'mud', label: 'Mud risk (estimate)', weight: 25, value: mudVal, note: `Mud risk ${mud.level}` });
 
-  const d = difficultyFit(area, params.difficulty);
+  const d = difficultyFit(area, params.difficulties);
   components.push({ key: 'difficulty', label: 'Difficulty fit', weight: 10, value: d.value, note: d.note });
 
   // Time fit
@@ -177,8 +177,8 @@ export function evaluateArea(area: RidingArea, input: EngineInput, rideId?: stri
   if (rideMinutesEstimated) timeNote += ' (ride length unknown — using a typical duration)';
   components.push({ key: 'time', label: 'Time fit', weight: 15, value: timeVal, note: timeNote });
 
-  const v = vibeFit(area, params.vibe);
-  components.push({ key: 'vibe', label: 'Vibe fit', weight: params.vibe === 'any' ? 4 : 10, value: v.value, note: v.note });
+  const v = vibesFit(area, params.vibes);
+  components.push({ key: 'vibe', label: 'Vibe fit', weight: params.vibes.some((x) => x !== 'any') ? 10 : 4, value: v.value, note: v.note });
 
   const p = preferenceFit(area, ride, prefs);
   components.push({ key: 'prefs', label: 'Your preferences', weight: 5, value: p.value, note: p.notes.length ? p.notes.join(', ') : 'No strong preference signals' });

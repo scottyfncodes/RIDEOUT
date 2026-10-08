@@ -47,6 +47,11 @@ export const VIBES: VibeSpec[] = [
   { id: 'questionable', label: 'Questionable Decisions', emoji: '💀', blurb: 'Very hard' },
 ];
 
+/** Toggle one value in a multi-select list. */
+export function toggle<T>(list: T[], v: T): T[] {
+  return list.includes(v) ? list.filter((x) => x !== v) : [...list, v];
+}
+
 export const DIFFICULTY_LABEL: Record<Difficulty, string> = {
   green: 'Green',
   blue: 'Blue',
@@ -64,8 +69,10 @@ export const DIFFICULTY_ICON: Record<Difficulty, string> = {
 export interface SearchParams {
   date: string;
   mode: RideMode;
-  vibe: Vibe;
-  difficulty: DifficultyChoice;
+  /** Selected vibes; empty means "Anything". */
+  vibes: Vibe[];
+  /** Selected difficulties; empty means "Any". */
+  difficulties: Difficulty[];
   maxDrive: DriveLimit;
   /** Quick Rip total budget in minutes. */
   quickBudget: number;

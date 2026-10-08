@@ -27,6 +27,7 @@ export const HOME_PRESETS: HomePreset[] = [
   { id: 'lakewood', name: 'Lakewood', lat: 39.7047, lon: -105.0814 },
   { id: 'arvada', name: 'Arvada', lat: 39.8028, lon: -105.0875 },
   { id: 'littleton', name: 'Littleton', lat: 39.6133, lon: -105.0166 },
+  { id: 'thornton', name: 'Thornton', lat: 39.868, lon: -104.9719 },
   { id: 'longmont', name: 'Longmont', lat: 40.1672, lon: -105.1019 },
   { id: 'evergreen', name: 'Evergreen', lat: 39.6333, lon: -105.3172 },
   { id: 'fort-collins', name: 'Fort Collins', lat: 40.5853, lon: -105.0844 },

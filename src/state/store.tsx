@@ -26,12 +26,22 @@ const Ctx = createContext<Store | null>(null);
 const PARAMS_KEY = 'rideout:params:v1';
 
 function initialParams(today: string, prefs: Preferences): SearchParams {
-  const base: SearchParams = { date: today, mode: 'half', vibe: 'any', difficulty: prefs.preferredDifficulty, maxDrive: prefs.maxDrive, quickBudget: 180 };
+  const base: SearchParams = {
+    date: today,
+    mode: 'half',
+    vibes: [],
+    difficulties: prefs.preferredDifficulty === 'any' ? [] : [prefs.preferredDifficulty],
+    maxDrive: prefs.maxDrive,
+    quickBudget: 180,
+  };
   try {
     const raw = sessionStorage.getItem(PARAMS_KEY);
     if (raw) {
       const p = { ...base, ...(JSON.parse(raw) as Partial<SearchParams>) };
       if (p.date < today) p.date = today; // a stale date from yesterday's session
+      // Sessions saved before multi-select stored single values.
+      if (!Array.isArray(p.vibes)) p.vibes = base.vibes;
+      if (!Array.isArray(p.difficulties)) p.difficulties = base.difficulties;
       return p;
     }
   } catch {
