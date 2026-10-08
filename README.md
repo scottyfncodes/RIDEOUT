@@ -12,6 +12,7 @@ For personal use by a small group of riders. No accounts, no social features, no
 
 ## What it does
 
+- **Top pick:** Home opens on the answer: the #1 ranked ride for the current filters (status, ride, drive, WHY) with a RIDE THIS button. Late in the day, when today is out of light, it shows tomorrow's pick. The filters below change it.
 - **Find my ride:** pick when, what you're doing (Quick Rip / Half Day / Big Adventure / Bike + Brewery), a vibe, difficulty and max drive. RIDEOUT ranks the areas as 🟢 SEND IT / 🟡 WORTH IT / 🟠 QUESTIONABLE / 🔴 SKIP IT / ⚪ UNKNOWN, each with a WHY.
 - **Ride window:** the best daylight block from the hourly forecast, labeled as *weather*, not trail condition.
 - **Mud risk (estimate):** from 72 h of precipitation, rain before your start, soil drainage per area, temperature, freeze/thaw and modeled snow.
