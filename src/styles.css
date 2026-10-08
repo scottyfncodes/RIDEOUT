@@ -64,8 +64,8 @@ img { max-width: 100%; }
 .display { font-family: var(--font-display); font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; line-height: 0.95; margin: 0; }
 .brand { font-size: 20px; letter-spacing: 0.24em; color: var(--accent); }
 .hero { font-size: 40px; margin: 4px 0 8px; }
-.chips.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.modes .chip { justify-content: center; }
+.chips.modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.modes .chip { justify-content: center; min-width: 0; white-space: normal; text-align: center; line-height: 1.15; }
 .legend { display: flex; gap: 6px; flex-wrap: wrap; }
 .legend .mk { box-shadow: none; }
 .h2 { font-family: var(--font-display); font-weight: 800; font-size: 26px; text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 8px; }
