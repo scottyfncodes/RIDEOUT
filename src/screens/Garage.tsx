@@ -221,7 +221,7 @@ function Trailside() {
         {TRAILSIDE.map((g) => (
           <details key={g.id} className="help">
             <summary>
-              <span aria-hidden>{g.icon}</span> {g.title}
+              {g.title}
             </summary>
             <ol>
               {g.steps.map((s) => (

@@ -41,11 +41,11 @@ export function BikeCard({ bike, from = 'garage' }: { bike: Bike | null; from?: 
       {(bike.frontPsi != null || bike.rearPsi != null) && (
         <div className="grid2" style={{ marginTop: 14 }} data-testid="bike-psi">
           <div className="stat">
-            <b>{bike.frontPsi ?? '—'} PSI</b>
+            <b>{bike.frontPsi ?? '–'} PSI</b>
             <span>Front · your usual</span>
           </div>
           <div className="stat">
-            <b>{bike.rearPsi ?? '—'} PSI</b>
+            <b>{bike.rearPsi ?? '–'} PSI</b>
             <span>Rear · your usual</span>
           </div>
         </div>

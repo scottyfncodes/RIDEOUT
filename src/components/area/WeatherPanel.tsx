@@ -80,11 +80,11 @@ export function WeatherPanel({ fx, date, isToday, window }: { fx: Fetched<AreaFo
           <span>Precip % (ride)</span>
         </div>
         <div className="stat">
-          <b>{day?.sunriseMin != null ? formatClock(day.sunriseMin) : '—'}</b>
+          <b>{day?.sunriseMin != null ? formatClock(day.sunriseMin) : '–'}</b>
           <span>Sunrise</span>
         </div>
         <div className="stat">
-          <b>{day?.sunsetMin != null ? formatClock(day.sunsetMin) : '—'}</b>
+          <b>{day?.sunsetMin != null ? formatClock(day.sunsetMin) : '–'}</b>
           <span>Sunset</span>
         </div>
       </div>

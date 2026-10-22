@@ -17,7 +17,7 @@ export const OSRM_SOURCE: Source = {
 };
 
 export const ESTIMATE_SOURCE: Source = {
-  label: 'Straight-line estimate (routing unavailable) — 1.35× detour at 38 mph',
+  label: 'Straight-line estimate (routing unavailable): 1.35× detour at 38 mph',
   confidence: 'estimate',
 };
 

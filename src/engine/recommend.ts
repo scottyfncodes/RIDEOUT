@@ -168,13 +168,13 @@ export function evaluateArea(area: RidingArea, input: EngineInput, rideId?: stri
     }
     if (window?.window?.clipped) {
       timeVal = Math.min(timeVal, 0.5);
-      timeNote += ' — shortened by daylight';
+      timeNote += ', shortened by daylight';
     }
   } else if (driveMin != null) {
     timeVal = null;
     timeNote = 'No ride window to plan around';
   }
-  if (rideMinutesEstimated) timeNote += ' (ride length unknown — using a typical duration)';
+  if (rideMinutesEstimated) timeNote += ' (ride length unknown, using a typical duration)';
   components.push({ key: 'time', label: 'Time fit', weight: 15, value: timeVal, note: timeNote });
 
   const v = vibesFit(area, params.vibes);
@@ -263,7 +263,7 @@ function explain(x: {
   }
   if (!x.window || x.window.reason === 'no-data') {
     whyNot.push('Weather unavailable. RIDEOUT won’t guess at conditions.');
-    return { why, whyNot, headline: 'Weather unavailable — no recommendation' };
+    return { why, whyNot, headline: 'Weather unavailable. No recommendation' };
   }
   if (x.window.reason === 'too-late') whyNot.push('Not enough daylight left today to get there and ride.');
   if (x.window.reason === 'no-daylight') whyNot.push('Too little daylight for this ride.');
@@ -296,7 +296,7 @@ function explain(x: {
   }
   const vibe = x.components.find((c) => c.key === 'vibe');
   if (vibe && vibe.weight >= 10) (vibe.value! >= 0.6 ? why : whyNot).push(vibe.note + '.');
-  if (x.wantsApres && x.brewery && x.brewery.driveMin <= 15) why.push(`🍺 ${x.brewery.place.name} ~${x.brewery.driveMin} min away.`);
+  if (x.wantsApres && x.brewery && x.brewery.driveMin <= 15) why.push(`Apres: ${x.brewery.place.name} ~${x.brewery.driveMin} min away.`);
 
   const headline = x.status === 'send' || x.status === 'worth' ? why.slice(0, 2).join(' ') || whyNot[0] : whyNot.slice(0, 2).join(' ') || why[0];
   return { why, whyNot, headline: headline ?? '' };

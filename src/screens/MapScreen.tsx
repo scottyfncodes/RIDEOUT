@@ -96,8 +96,8 @@ export function MapScreen() {
           </div>
           {selR?.window?.window && (
             <p className="muted" style={{ margin: '0 0 6px' }}>
-              ⏱ {formatClock(selR.window.window.start)}–{formatClock(selR.window.window.end)}
-              {selR.drive ? ` · 🚗 ${Math.round(selR.drive.minutes)} min` : ''}
+              {formatClock(selR.window.window.start)}–{formatClock(selR.window.window.end)}
+              {selR.drive ? ` · ${Math.round(selR.drive.minutes)} min drive` : ''}
             </p>
           )}
           {selR && <p style={{ margin: '0 0 10px' }}>{selR.headline}</p>}

@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
-import { Chip, MultiChip, StatusBadge } from '../components/ui';
-import { DIFFICULTY_ICON, DIFFICULTY_LABEL, MODES, QUICK_BUDGETS, VIBES, toggle, type DriveLimit, type RideMode } from '../engine/modes';
+import { Chip, MultiChip, StatusBadge, TrailSign } from '../components/ui';
+import { DIFFICULTY_LABEL, MODES, QUICK_BUDGETS, VIBES, toggle, type DriveLimit, type RideMode } from '../engine/modes';
 import { DIFFICULTY_ORDER } from '../content/types';
 import { useRideData, type RideData } from '../hooks/useRideData';
 import { href } from '../hooks/useRoute';
@@ -57,7 +57,7 @@ export function Home() {
           </Chip>
         ))}
         <label className="chip date-chip" aria-pressed={customDate}>
-          <span aria-hidden>📅{customDate ? ` ${formatDateLabel(params.date, today)}` : ''}</span>
+          <span aria-hidden>{customDate ? formatDateLabel(params.date, today) : 'Pick date'}</span>
           <input
             type="date"
             aria-label="Pick a date"
@@ -78,7 +78,7 @@ export function Home() {
       <div className="chips modes" role="group" aria-label="Ride type">
         {(Object.keys(MODES) as RideMode[]).map((m) => (
           <Chip key={m} value={m} current={params.mode} onSelect={(v) => setParams({ mode: v })} testId={`mode-${m}`}>
-            {MODES[m].emoji} {MODES[m].label}
+            {MODES[m].label}
           </Chip>
         ))}
       </div>
@@ -101,7 +101,7 @@ export function Home() {
           const pressed = v.id === 'any' ? params.vibes.length === 0 : params.vibes.includes(v.id);
           return (
             <MultiChip key={v.id} pressed={pressed} onClick={() => setParams({ vibes: v.id === 'any' ? [] : toggle(params.vibes, v.id) })} testId={`vibe-${v.id}`}>
-              {v.emoji} {v.label}
+              {v.label}
             </MultiChip>
           );
         })}
@@ -114,7 +114,7 @@ export function Home() {
         </MultiChip>
         {DIFFICULTY_ORDER.map((d) => (
           <MultiChip key={d} pressed={params.difficulties.includes(d)} onClick={() => setParams({ difficulties: toggle(params.difficulties, d) })} testId={`diff-${d}`}>
-            {DIFFICULTY_ICON[d]} {DIFFICULTY_LABEL[d]}
+            <TrailSign difficulty={d} /> {DIFFICULTY_LABEL[d]}
           </MultiChip>
         ))}
       </div>
@@ -241,7 +241,7 @@ function Results({ data, date, today }: { data: RideData; date: string; today: s
       </div>
       {data.weatherErrors > 0 && (
         <div className="notice bad" role="status">
-          Weather unavailable for {data.weatherErrors === results.length + excluded.length ? 'all areas' : `${data.weatherErrors} area(s)`}. Those areas show ⚪ UNKNOWN. RIDEOUT
+          Weather unavailable for {data.weatherErrors === results.length + excluded.length ? 'all areas' : `${data.weatherErrors} area(s)`}. Those areas show UNKNOWN. RIDEOUT
           won’t guess.
         </div>
       )}
@@ -318,11 +318,11 @@ function RideFacts({ r }: { r: Recommendation }) {
       <div className="tags">
         {r.drive && (
           <span className="pill">
-            🚗 {Math.round(r.drive.minutes)} min{r.drive.method === 'estimate' ? ' (est.)' : ''}
+            {Math.round(r.drive.minutes)} min drive{r.drive.method === 'estimate' ? ' (est.)' : ''}
           </span>
         )}
-        {w && <span className="pill">⏱ {formatClock(w.start)}–{formatClock(w.end)}</span>}
-        {r.itinerary && <span className="pill">🏠 {formatDuration(r.itinerary.totalMin)} total</span>}
+        {w && <span className="pill">{formatClock(w.start)}–{formatClock(w.end)}</span>}
+        {r.itinerary && <span className="pill">{formatDuration(r.itinerary.totalMin)} door to door</span>}
         {r.mud.level !== 'unknown' && <span className="pill">Mud: {r.mud.level}</span>}
       </div>
     </>

@@ -1,11 +1,11 @@
 export type Status = 'send' | 'worth' | 'questionable' | 'skip' | 'unknown';
 
-export const STATUS_META: Record<Status, { emoji: string; label: string; marker: string; color: string }> = {
-  send: { emoji: '🟢', label: 'SEND IT', marker: 'RIDE', color: 'var(--go)' },
-  worth: { emoji: '🟡', label: 'WORTH IT', marker: 'MAYBE', color: 'var(--maybe)' },
-  questionable: { emoji: '🟠', label: 'QUESTIONABLE', marker: 'CONDITIONS', color: 'var(--iffy)' },
-  skip: { emoji: '🔴', label: 'SKIP IT', marker: 'NOPE', color: 'var(--nope)' },
-  unknown: { emoji: '⚪', label: 'UNKNOWN', marker: 'UNKNOWN', color: 'var(--unknown)' },
+export const STATUS_META: Record<Status, { label: string; marker: string; color: string }> = {
+  send: { label: 'SEND IT', marker: 'RIDE', color: 'var(--go)' },
+  worth: { label: 'WORTH IT', marker: 'MAYBE', color: 'var(--maybe)' },
+  questionable: { label: 'QUESTIONABLE', marker: 'CONDITIONS', color: 'var(--iffy)' },
+  skip: { label: 'SKIP IT', marker: 'NOPE', color: 'var(--nope)' },
+  unknown: { label: 'UNKNOWN', marker: 'UNKNOWN', color: 'var(--unknown)' },
 };
 
 const ORDER: Status[] = ['send', 'worth', 'questionable', 'skip'];

@@ -59,7 +59,6 @@ export const PREP_CHECKS: Record<PrepCheckId, string> = {
 export interface TrailsideGuide {
   id: string;
   title: string;
-  icon: string;
   steps: string[];
 }
 
@@ -69,7 +68,6 @@ export const TRAILSIDE: TrailsideGuide[] = [
   {
     id: 'flat',
     title: 'Flat tire',
-    icon: '🛞',
     steps: [
       'Get off the trail. Find the leak by spinning the wheel and listening or feeling for air.',
       'Tubeless: rotate the hole to the bottom so sealant can reach it, then re-inflate. If it won’t seal, plug it.',
@@ -80,7 +78,6 @@ export const TRAILSIDE: TrailsideGuide[] = [
   {
     id: 'dropped-chain',
     title: 'Dropped chain',
-    icon: '⛓️',
     steps: [
       'Shift to a middle gear.',
       'Lift the chain back onto the chainring by hand, then turn the pedals backward slowly.',
@@ -90,7 +87,6 @@ export const TRAILSIDE: TrailsideGuide[] = [
   {
     id: 'broken-chain',
     title: 'Broken chain',
-    icon: '🔗',
     steps: [
       'Collect the chain and find the broken link.',
       'Use a chain tool to push out the damaged link or links.',
@@ -101,7 +97,6 @@ export const TRAILSIDE: TrailsideGuide[] = [
   {
     id: 'brakes',
     title: 'Brake problem',
-    icon: '🛑',
     steps: [
       'Soft or spongy lever, or it pulls to the bar: stop riding downhill on that brake.',
       'Rubbing: check the wheel is seated and the axle is tight. A bent rotor can sometimes be gently trued by hand.',
@@ -111,7 +106,6 @@ export const TRAILSIDE: TrailsideGuide[] = [
   {
     id: 'shifting',
     title: 'Shifting problem',
-    icon: '⚙️',
     steps: [
       'Check the derailleur and hanger aren’t visibly bent. A bent hanger can put the derailleur in the spokes.',
       'Skipping or ghost-shifting: a small barrel-adjuster turn often helps.',
@@ -121,7 +115,6 @@ export const TRAILSIDE: TrailsideGuide[] = [
   {
     id: 'loose',
     title: 'Loose component',
-    icon: '🔩',
     steps: [
       'Find the source of the rattle or play: axles, stem, headset, bar, seatpost, pedals.',
       'Snug it with your multitool. Don’t over-tighten carbon parts.',
@@ -131,7 +124,6 @@ export const TRAILSIDE: TrailsideGuide[] = [
   {
     id: 'tubeless',
     title: 'Tubeless problem',
-    icon: '💧',
     steps: [
       'Burped tire: re-inflate, then check the bead is seated all the way round.',
       'Sealant spraying from a hole: rotate it to the bottom and wait. Plug it if it doesn’t seal.',

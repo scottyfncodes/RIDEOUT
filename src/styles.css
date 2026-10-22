@@ -16,7 +16,7 @@
   --radius: 14px;
   --tap: 48px;
   --font-display: 'Barlow Condensed', 'Arial Narrow', 'Roboto Condensed', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Barlow', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   color-scheme: dark;
@@ -280,3 +280,14 @@ a.cta { display: flex; align-items: center; justify-content: center; text-decora
 .chips.dates { gap: 6px; }
 .chips.dates .chip { padding: 0 14px; }
 .chips.dates .date-chip { padding: 0 12px; }
+
+/* Level dots (ride window, mud risk): color carries the verdict. */
+.ldot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: 0; flex: none; }
+.ldot.big { width: 18px; height: 18px; margin-right: 10px; }
+.ldot.lv-unknown { background: var(--unknown); }
+.hour .ldot { justify-self: center; margin: 0; }
+/* Trail difficulty signs, as posted at the trailhead. Black diamonds take the text color so they read on any chip. */
+.tsign { height: 12px; width: auto; flex: none; vertical-align: -1px; }
+.tsign.green { fill: #1f9d4c; }
+.tsign.blue { fill: #1f6fd6; }
+.tsign.black, .tsign.dblack { fill: currentColor; }

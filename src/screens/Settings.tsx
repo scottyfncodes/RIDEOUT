@@ -62,7 +62,7 @@ export function Settings() {
         </select>
       </div>
       <button type="button" className="btn" onClick={useGps}>
-        📍 Use my location
+        Use my location
       </button>
       {geoMsg && <p className="dim">{geoMsg}</p>}
 

@@ -19,7 +19,7 @@ function Contact({ o }: { o: PlaceOption }) {
     <div className="btn-row" style={{ marginTop: 8 }}>
       {o.phone && (
         <a className="btn" href={`tel:${o.phone.replace(/[^\d+]/g, '')}`}>
-          📞 Call
+          Call
         </a>
       )}
       {o.website && (
@@ -36,10 +36,10 @@ function Contact({ o }: { o: PlaceOption }) {
 
 /** Service filters that map to real OpenStreetMap tags (see bikeShopServices). */
 export const SHOP_FILTERS = [
-  { key: 'repair', label: '🔧 Repairs' },
-  { key: 'parts', label: '🔩 Parts' },
-  { key: 'rental', label: '🚲 Rentals' },
-  { key: 'wash', label: '🧰 Bike wash' },
+  { key: 'repair', label: 'Repairs' },
+  { key: 'parts', label: 'Parts' },
+  { key: 'rental', label: 'Rentals' },
+  { key: 'wash', label: 'Bike wash' },
 ] as const;
 export type ShopFilter = (typeof SHOP_FILTERS)[number]['key'] | 'all';
 
@@ -85,7 +85,7 @@ export function ShopList(props: {
                 </div>
                 <div className="dim">Today: {o.hoursToday ?? 'hours not listed'}</div>
                 <div className="tags">
-                  {services.length ? services.map((s) => <span key={s.key} className="pill">{s.icon} {s.label}</span>) : <span className="pill">Services not listed</span>}
+                  {services.length ? services.map((s) => <span key={s.key} className="pill">{s.label}</span>) : <span className="pill">Services not listed</span>}
                 </div>
                 <Contact o={o} />
               </div>
@@ -111,12 +111,12 @@ export function BikeShopsPanel({ area, places, weekday, nowish }: { area: Riding
 }
 
 const CATS: Array<{ id: PlaceCategory; label: string }> = [
-  { id: 'brewery', label: '🍺 Breweries' },
-  { id: 'food', label: '🍔 Food' },
-  { id: 'mexican', label: '🌮 Mexican' },
-  { id: 'pizza', label: '🍕 Pizza' },
-  { id: 'coffee', label: '☕ Coffee' },
-  { id: 'dessert', label: '🍦 Dessert' },
+  { id: 'brewery', label: 'Breweries' },
+  { id: 'food', label: 'Food' },
+  { id: 'mexican', label: 'Mexican' },
+  { id: 'pizza', label: 'Pizza' },
+  { id: 'coffee', label: 'Coffee' },
+  { id: 'dessert', label: 'Dessert' },
 ];
 
 export function ApresPanel({ area, places, weekday, rideEnd }: { area: RidingArea; places: Fetched<Place[]> | null; weekday: number; rideEnd: number | null }) {
