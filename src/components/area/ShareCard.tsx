@@ -54,8 +54,8 @@ function draw(canvas: HTMLCanvasElement, r: Recommendation, lines: string[]) {
   ctx.font = display.replace('{s}', '88');
   ctx.fillText(STATUS_META[r.status].label, 150, 420);
   ctx.fillStyle = '#f1ece0';
-  ctx.font = "500 40px Inter, system-ui, sans-serif";
-  const body = lines.slice(3).filter((l) => !/^(🟢|🟡|🟠|🔴|⚪) /.test(l));
+  ctx.font = "500 40px Barlow, system-ui, sans-serif";
+  const body = lines.slice(3).filter((l) => l !== STATUS_META[r.status].label);
   let y = 520;
   for (const line of body) {
     if (!line) {
@@ -69,7 +69,7 @@ function draw(canvas: HTMLCanvasElement, r: Recommendation, lines: string[]) {
     }
   }
   ctx.fillStyle = cssVar('--ink-3', '#8a8679');
-  ctx.font = '500 28px Inter, system-ui, sans-serif';
+  ctx.font = '500 28px Barlow, system-ui, sans-serif';
   ctx.fillText('Find the ride. Know the ride. Get out there.', 80, H - 50);
 }
 

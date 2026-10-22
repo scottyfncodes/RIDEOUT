@@ -17,7 +17,7 @@ export function BikePrepPanel({ prep }: { prep: BikePrep }) {
       </ul>
       {prep.usualPsi && (
         <p className="small" data-testid="prep-psi">
-          Your usual: <b>{prep.usualPsi.front ?? '—'}</b> front · <b>{prep.usualPsi.rear ?? '—'}</b> rear PSI <span className="dim">(from your Garage, not a recommendation)</span>
+          Your usual: <b>{prep.usualPsi.front ?? '–'}</b> front · <b>{prep.usualPsi.rear ?? '–'}</b> rear PSI <span className="dim">(from your Garage, not a recommendation)</span>
         </p>
       )}
       <ul className="basis" aria-label="Based on">

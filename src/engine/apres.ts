@@ -80,17 +80,16 @@ export function nearestBrewery(breweries: Place[], from: LatLon): { place: Place
 export interface ShopService {
   key: string;
   label: string;
-  icon: string;
 }
 
 /** Only services explicitly tagged in OSM. */
 export function bikeShopServices(tags: Record<string, string>): ShopService[] {
   const out: ShopService[] = [];
   const has = (k: string) => tags[k] === 'yes';
-  if (has('service:bicycle:repair')) out.push({ key: 'repair', label: 'Repairs', icon: '🔧' });
-  if (has('service:bicycle:retail') || has('service:bicycle:parts')) out.push({ key: 'parts', label: 'Parts', icon: '🔩' });
-  if (has('service:bicycle:rental')) out.push({ key: 'rental', label: 'Rentals', icon: '🚲' });
-  if (has('service:bicycle:cleaning')) out.push({ key: 'wash', label: 'Bike wash', icon: '🧰' });
-  if (has('service:bicycle:pump')) out.push({ key: 'pump', label: 'Pump', icon: '🛞' });
+  if (has('service:bicycle:repair')) out.push({ key: 'repair', label: 'Repairs' });
+  if (has('service:bicycle:retail') || has('service:bicycle:parts')) out.push({ key: 'parts', label: 'Parts' });
+  if (has('service:bicycle:rental')) out.push({ key: 'rental', label: 'Rentals' });
+  if (has('service:bicycle:cleaning')) out.push({ key: 'wash', label: 'Bike wash' });
+  if (has('service:bicycle:pump')) out.push({ key: 'pump', label: 'Pump' });
   return out;
 }

@@ -41,7 +41,6 @@ export function GettingThere({ r, homeLabel }: { r: Recommendation; homeLabel: s
                 <time>{formatClock(s.at)}</time>
                 <span>
                   {s.kind === 'ride-start' ? `Ride ${formatClock(it.rideStart)}–${formatClock(it.rideEnd)}` : s.label}
-                  {s.kind === 'apres' ? ' 🍺' : ''}
                   {s.detail ? <span className="dim"> · {s.detail}</span> : null}
                 </span>
               </li>

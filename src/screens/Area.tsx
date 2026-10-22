@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { getArea } from '../content/areas';
-import { DIFFICULTY_ICON, DIFFICULTY_LABEL } from '../engine/modes';
+import { DIFFICULTY_LABEL } from '../engine/modes';
 import { evaluateArea } from '../engine/recommend';
 import { estimateRideMinutes } from '../engine/fit';
 import { useAreaPlaces } from '../hooks/useAreaPlaces';
@@ -9,7 +9,7 @@ import { href } from '../hooks/useRoute';
 import { useStore } from '../state/store';
 import { fmtFt, fmtMi } from '../utils/format';
 import { formatDateLabel, formatDuration, weekday } from '../utils/time';
-import { Chip, RatingRow, Section, SourceLine, StatusBadge } from '../components/ui';
+import { Chip, RatingRow, Section, SourceLine, StatusBadge, TrailSign } from '../components/ui';
 import { RideWindowPanel } from '../components/area/RideWindowPanel';
 import { WeatherPanel } from '../components/area/WeatherPanel';
 import { ConditionsPanel } from '../components/area/ConditionsPanel';
@@ -141,7 +141,7 @@ export function Area({ id }: { id: string }) {
         {r?.ride ? (
           <>
             <p style={{ margin: '0 0 8px' }}>
-              <b>{r.ride.name}</b> · {DIFFICULTY_ICON[r.ride.difficulty]} {DIFFICULTY_LABEL[r.ride.difficulty]}
+              <b>{r.ride.name}</b> · <TrailSign difficulty={r.ride.difficulty} /> {DIFFICULTY_LABEL[r.ride.difficulty]}
             </p>
             <div className="grid3" data-testid="stats">
               <div className="stat">
@@ -153,7 +153,7 @@ export function Area({ id }: { id: string }) {
                 <span>Climbing</span>
               </div>
               <div className="stat">
-                <b>{estimateRideMinutes(r.ride) != null ? formatDuration(estimateRideMinutes(r.ride)!) : '—'}</b>
+                <b>{estimateRideMinutes(r.ride) != null ? formatDuration(estimateRideMinutes(r.ride)!) : '–'}</b>
                 <span>Est. ride time</span>
               </div>
               <div className="stat">
@@ -165,13 +165,13 @@ export function Area({ id }: { id: string }) {
                 <span>Network miles</span>
               </div>
               <div className="stat">
-                <b>{area.trailCount ?? '—'}</b>
+                <b>{area.trailCount ?? '–'}</b>
                 <span>Trails</span>
               </div>
             </div>
             <p className="dim">
               Difficulty range: {DIFFICULTY_LABEL[area.difficultyRange[0]]}
-              {area.difficultyRange[1] !== area.difficultyRange[0] ? ` → ${DIFFICULTY_LABEL[area.difficultyRange[1]]}` : ''}. “—” means not enough data.
+              {area.difficultyRange[1] !== area.difficultyRange[0] ? ` → ${DIFFICULTY_LABEL[area.difficultyRange[1]]}` : ''}. “–” means not enough data.
             </p>
             {r.ride.notes && <p className="small muted">{r.ride.notes}</p>}
             <SourceLine source={r.ride.source} prefix="Ride stats" />

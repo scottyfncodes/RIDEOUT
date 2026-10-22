@@ -3,8 +3,6 @@ import { formatClock, formatHourShort } from '../../utils/time';
 import { fmtPct, fmtTemp } from '../../utils/format';
 import { Section } from '../ui';
 
-const EMOJI = { great: '🟢', good: '🟢', fair: '🟡', poor: '🟠', bad: '🔴', unknown: '⚪' } as const;
-
 export function RideWindowPanel({ r }: { r: Recommendation }) {
   const w = r.window;
   return (
@@ -22,7 +20,7 @@ export function RideWindowPanel({ r }: { r: Recommendation }) {
                 {formatClock(w.window.start)} → {formatClock(w.window.end)}
               </div>
               <div className="muted" style={{ marginTop: 6 }}>
-                {EMOJI[w.window.level]} {w.window.level === 'great' || w.window.level === 'good' ? 'Best conditions' : w.window.level === 'fair' ? 'Best available — fair' : 'Best available — poor'}
+                <span className={`ldot lv-${w.window.level}`} aria-hidden />{w.window.level === 'great' || w.window.level === 'good' ? 'Best conditions' : w.window.level === 'fair' ? 'Best available: fair' : 'Best available: poor'}
                 {w.window.goodSpan && (w.window.goodSpan.start !== w.window.start || w.window.goodSpan.end !== w.window.end) && (
                   <span className="dim">
                     {' '}
@@ -51,7 +49,7 @@ export function RideWindowPanel({ r }: { r: Recommendation }) {
                 return (
                   <li key={s.minutes} className={`hour${inWin ? ' in' : ''}`}>
                     <span className="mono">{formatHourShort(s.minutes)}</span>
-                    <span aria-hidden>{EMOJI[s.verdict.level]}</span>
+                    <span className={`ldot lv-${s.verdict.level}`} aria-hidden />
                     <span>{s.verdict.label}</span>
                     <span className="dim mono">
                       {fmtTemp(s.hour.tempF)} · {fmtPct(s.hour.precipProb)}
@@ -62,7 +60,7 @@ export function RideWindowPanel({ r }: { r: Recommendation }) {
           </ul>
           {w.sunrise != null && w.sunset != null && (
             <p className="dim">
-              ☀️ Sunrise {formatClock(w.sunrise)} · Sunset {formatClock(w.sunset)}
+              Sunrise {formatClock(w.sunrise)} · Sunset {formatClock(w.sunset)}
             </p>
           )}
         </>

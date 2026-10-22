@@ -114,7 +114,7 @@ export function bikeSummary(b: Bike): string[] {
   if (b.type === 'emtb') out.push('e-MTB');
   if (b.wheel) out.push(b.wheel === 'mullet' ? 'Mullet' : b.wheel === 'other' ? 'Other wheels' : `${b.wheel}″`);
   if (b.frontTravelMm != null || b.rearTravelMm != null) {
-    out.push(b.rearTravelMm != null ? `${b.frontTravelMm ?? '—'} / ${b.rearTravelMm}mm` : `${b.frontTravelMm}mm fork`);
+    out.push(b.rearTravelMm != null ? `${b.frontTravelMm ?? '–'} / ${b.rearTravelMm}mm` : `${b.frontTravelMm}mm fork`);
   }
   if (b.tubeless === true) out.push('Tubeless');
   if (b.tubeless === false) out.push('Tubes');

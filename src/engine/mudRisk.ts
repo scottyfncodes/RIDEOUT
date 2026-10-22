@@ -84,7 +84,7 @@ export function assessMudRisk(opts: {
   }
   if (freezeThaw && (wet >= 0.03 || snowPrev > 0)) {
     level = bumpLevel(level, 1);
-    drivers.push('freeze/thaw — firm early, soft once it warms');
+    drivers.push('freeze/thaw: firm early, soft once it warms');
   }
 
   return { level, index: Math.round(wet * 100) / 100, explanation: explain(level, drivers), drivers, recentPrecipIn: Math.round(recent * 100) / 100 };

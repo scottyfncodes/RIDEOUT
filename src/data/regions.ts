@@ -7,7 +7,7 @@ export interface Region {
 }
 
 export const REGIONS: Region[] = [
-  { id: 'colorado', name: 'Colorado — Front Range', timezone: 'America/Denver', center: [39.72, -105.28], zoom: 9 },
+  { id: 'colorado', name: 'Colorado Front Range', timezone: 'America/Denver', center: [39.72, -105.28], zoom: 9 },
 ];
 
 export const DEFAULT_REGION = REGIONS[0];

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Rating, Source } from '../content/types';
+import type { Difficulty, Rating, Source } from '../content/types';
 import { STATUS_META, type Status } from '../engine/status';
 
 export function Chip<T extends string | number | null>(props: {
@@ -86,12 +86,6 @@ export function RatingRow({ label, value, hot }: { label: string; value: Rating;
   );
 }
 
-/** Emoji-dot for compact rating (used on share card / list). */
-export function ratingDot(v: Rating): string {
-  if (v == null) return '⚪';
-  return ['🟢', '🟢', '🟡', '🟠', '🔴'][v];
-}
-
 export function ExtLink({ href, children, className = 'btn' }: { href: string; children: ReactNode; className?: string }) {
   return (
     <a className={className} href={href} target="_blank" rel="noopener noreferrer">
@@ -111,5 +105,23 @@ export function Section({ title, children, id, right }: { title: string; childre
       </div>
       {children}
     </section>
+  );
+}
+
+/** The trail-sign symbol riders already read at the trailhead: green circle, blue square, black diamond, double black. */
+export function TrailSign({ difficulty }: { difficulty: Difficulty }) {
+  const diamond = (cx: number) => <rect x={cx - 4.6} y={2.4} width={9.2} height={9.2} transform={`rotate(45 ${cx} 7)`} />;
+  return (
+    <svg className={`tsign ${difficulty}`} viewBox={difficulty === 'dblack' ? '0 0 26 14' : '0 0 14 14'} aria-hidden focusable="false">
+      {difficulty === 'green' && <circle cx={7} cy={7} r={6} />}
+      {difficulty === 'blue' && <rect x={1.5} y={1.5} width={11} height={11} />}
+      {difficulty === 'black' && diamond(7)}
+      {difficulty === 'dblack' && (
+        <>
+          {diamond(7)}
+          {diamond(19)}
+        </>
+      )}
+    </svg>
   );
 }
